@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.flower.dao.ICommentDao">
+
+
+	<resultMap type="com.flower.entity.Comment" id="CommentMap">
+		<id column="c_id" property="c_id" />
+		<result column="u_id" property="u_id" />
+		<result column="f_id" property="f_id" />
+		<result column="c_comment" property="c_comment" />
+		<result column="c_time" property="c_time" />
+
+		<association  property="flower" javaType="com.flower.entity.Flower">
+			<id column="f_id" property="flowerId" />
+			<result column="f_name" property="flowerName" />
+			<result column="price" property="price" />
+			<result column="f_url1" property="flowerUrl1" />
+			<result column="material" property="material" />
+			<result column="f_language" property="flowerLanguage" />
+		</association >
+	</resultMap>
+	<resultMap type="com.flower.entity.Comment" id="CommentandUser"
+		extends="CommentMap">
+		<collection property="user" ofType="com.flower.entity.User">
+			<id column="u_id" property="u_id" />
+			<result column="u_rname" property="u_rname" />
+		</collection>
+	</resultMap>
+
+	<!-- 命名空间的值可以任意取，但是一般我们会设计一个接口，命名空间的值就设定为该接口的包名+接口名 -->
+
+	<!-- resultType:返回结果的类型；如果返回的数据只有一条，那么直接返回该类型的对象； 如果返回的结果是多条，自动生成泛型为该类的集合 -->
+		<select id="findCommentLimit" resultMap="CommentandUser">
+		SELECT
+		c1.*,
+		u1.u_rname,
+		u1.u_id,
+		f1.*
+		FROM
+		comment c1,
+		user u1,
+		flower f1
+		WHERE c1.u_id = u1.u_id AND c1.f_id=f1.f_id AND 
+        <if test="u_id != null">
+          c1.u_id=#{u_id}
+        </if> 
+		<if test="flowerId != null">
+         c1.f_id=#{flowerId}
+        </if>
+        limit #{startPos},#{pageSize}
+	</select>
+
+	<select id="findCount" resultType="long">  
+	  SELECT COUNT(*) FROM comment where
+	  <if test="flowerId != null">
+         f_id=#{flowerId,jdbcType=INTEGER}
+        </if>
+        <if test="u_id != null">
+          u_id=#{u_id,jdbcType=INTEGER}
+        </if>   
+	</select>
+ 
+
+	<insert id="addComment" parameterType="com.flower.entity.Comment">
+		insert into comment values(null,#{u_id},#{f_id},#{c_comment},#{c_time})
+	</insert>
+
+	<delete id="deleteByC_id" parameterType="int">
+		delete from comment
+		where c_id=#{c_id}
+	</delete>
+	
+	
+	<!-- *********************************************** -->
+	<!-- findCommentLimit(@Param("flowerId") Integer flowerId,@Param(value="u_id") Integer u_id,@Param(value="pageSize") Integer pageSize) -->
+	
+
+</mapper>
+

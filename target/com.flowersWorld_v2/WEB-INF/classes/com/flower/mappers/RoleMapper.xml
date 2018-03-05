@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.flower.dao.IRoleDao">
+<!-- 命名空间的值可以任意取，但是一般我们会设计一个接口，命名空间的值就设定为该接口的包名+接口名 -->
+
+	<!-- 对应角色类的增删改查操作 -->
+	<resultMap type="com.flower.entity.Role" id="roleManager">
+	<id property="rId" column="r_id"/>
+	<result property="rName" column="r_name"/>
+	<result property="pId" column="p_id"/>
+	</resultMap>
+	
+	<!-- 查询全部 -->
+	<select id="findAllRole" resultMap="roleManager">
+		select * from role
+	</select>
+	
+	<!-- 根据id查询 -->
+	<select id="findById" resultMap="roleManager" parameterType="Integer">
+		select * from role where r_id=#{rId}
+	</select>
+	
+	<!-- 根据pid查询 -->
+	<select id="findByPid" resultMap="roleManager" parameterType="Integer">
+		select * from role where p_id=#{pId}
+	</select>
+	
+	
+	<!-- 删除 -->
+	<delete id="deleteRole" parameterType="Integer" >
+		delete from role where r_Id=#{rId}
+	</delete>
+	
+	<!-- 修改-->
+	<update id="updateRole" parameterType="com.flower.entity.Role">
+		update role 
+		<set>
+			<if test="rName != null">
+				r_name=#{rName},
+			</if>
+			<if test="pId != null">
+				p_id=#{pId},
+			</if>
+		</set>
+		where r_id=#{rId}
+	</update>
+
+	<!-- 增加 -->
+	<insert id="addRole" parameterType="com.flower.entity.Role">
+		 insert into role(r_name,p_id) values(#{rName},#{pId})
+	</insert>
+	
+	
+	<select id="findByRoleIds" resultMap="roleManager" parameterType="Integer">
+		select * from role
+		where r_id in
+		<foreach item="item" index="lists" collection="list"
+	          open="(" separator="," close=")">
+	          #{item}
+	    </foreach>
+	</select>
+	
+	
+</mapper>
+

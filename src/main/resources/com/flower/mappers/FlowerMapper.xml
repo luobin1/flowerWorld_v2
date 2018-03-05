@@ -1,0 +1,121 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.flower.dao.IFlowerDao">
+	<resultMap type="Flower" id="flowerMap">
+		<id property="flowerId" column="f_id" />
+		<result property="flowerName" column="f_name" />
+		<result property="flowerTypeId" column="ftype_id" />
+		<result property="purposeId" column="purpose_id" />
+		<result property="material" column="material" />
+		<result property="packing" column="packing" />
+		<result property="flowerLanguage" column="f_language" />
+		<result property="gifts" column="gifts" />
+		<result property="distribution" column="distribution" />
+		<result property="price" column="price" />
+		<result property="flowerUrl1" column="f_url1" />
+		<result property="flowerUrl2" column="f_url2" />
+		<result property="flowerUrl3" column="f_url3" />
+		<result property="flowerUrl4" column="f_url4" />
+	</resultMap>
+
+	<select id="findAll" resultMap="flowerMap">
+		select * from flower
+	</select>
+	<select id="findFlowerById" parameterType="Integer" resultMap="flowerMap">
+		select * from flower where f_id =#{flowerId}
+	</select>
+	<select id="findFlowerByPage" parameterType="Integer" resultMap="flowerMap">
+		select * from flower limit #{pageNumber},8
+	</select>
+	<update id="updateFlower" parameterType="com.flower.entity.Flower">
+		update flower
+		<set>
+			<if test="flowerName != null">
+				f_name=#{flowerName},
+			</if>
+			<if test="flowerTypeId != null">
+				ftype_id=#{flowerTypeId},
+			</if>
+			<if test="purposeId != null">
+				purpose_id=#{purposeId},
+			</if>
+			<if test="material != null">
+				material=#{material},
+			</if>
+			<if test="packing != null">
+				packing=#{packing},
+			</if>
+			<if test="flowerLanguage != null">
+				f_language=#{flowerLanguage},
+			</if>
+			<if test="gifts != null">
+				gifts=#{gifts},
+			</if>
+			<if test="distribution != null">
+				distribution=#{distribution},
+			</if>
+			<if test="price != null">
+				price=#{price},
+			</if>
+			<if test="flowerUrl1 != null">
+				f_url1=#{flowerUrl1},
+			</if>
+			<if test="flowerUrl2 != null">
+				f_url2=#{flowerUrl2},
+			</if>
+			<if test="flowerUrl3 != null">
+				f_url3=#{flowerUrl3},
+			</if>
+			<if test="flowerUrl4 != null">
+				f_url4=#{flowerUrl4},
+			</if>
+		</set>
+		where f_id=#{flowerId}
+	</update>
+	<delete id="deleteFlowerById" parameterType="int">
+		delete from flower
+		where f_id=#{flowerId}
+	</delete>
+	<insert id="addFlower" parameterType="com.flower.entity.Flower">
+		insert into 
+		flower (f_name,ftype_id,purpose_id,material,packing,f_language,gifts,distribution,price,f_url1,f_url2,f_url3,f_url4)
+		values(#{flowerName},#{flowerTypeId},#{purposeId},#{material},#{packing},#{flowerLanguage},#{gifts},#{distribution},#{price},#{flowerUrl1}, 'aaa', 'aaaa', 'aaa')	
+	</insert>
+	
+	<!-- 鲜花分类查询 -->
+	<select id="selectFlowerByType"  resultMap="flowerMap">
+		SELECT * FROM flower 
+		<if test="flowerTypeId != 0">
+           where ftype_id = #{flowerTypeId} 
+        </if>
+		
+		  limit #{pageNumber},8
+	</select>
+	<!-- 查询一类鲜花的总条数 -->
+	<select id="selectFlowerTypeNumber" resultType="Integer">
+		SELECT COUNT(*) FROM flower
+		<if test="flowerTypeId != 0">
+          where ftype_id=#{flowerTypeId}
+        </if> 
+	</select>
+	<!-- 模糊查询 -->
+	<select id="findSome" resultMap="flowerMap">
+		select * from flower where f_name like "%"#{flowerName}"%"
+		<if test="pageNumber != null">
+			limit #{pageNumber},8
+		</if>
+	</select>
+	
+	
+	<!-- <resultMap type="User" id="UserResult"> <result property="id" column="id"/> 
+		<result property="userName" column="userName"/> <result property="password" 
+		column="password"/> </resultMap> <select id="getByUserName" parameterType="String" 
+		resultMap="UserResult"> select * from t_user where userName=#{userName} </select> 
+		<select id="getRoles" parameterType="String" resultType="String"> select 
+		r.roleName from t_user u,t_role r where u.roleId=r.id and u.userName=#{userName} 
+		</select> <select id="getPermissions" parameterType="String" resultType="String"> 
+		select p.permissionName from t_user u,t_role r,t_permission p where u.roleId=r.id 
+		and p.roleId=r.id and u.userName=#{userName} </select> -->
+</mapper> 

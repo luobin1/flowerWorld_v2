@@ -1,0 +1,144 @@
+﻿/*
+	添加全局属性
+*/
+a {
+	color: #333;
+	text-decoration: none;
+}
+
+body {
+	font-size: 12px;
+	color: f00;
+}
+#header{
+	height: 110px;
+}
+#masthed{
+	background-color: #fcfcfc;
+	padding: 0 35px 0 35px;
+}
+#head-div{
+	width: 300px;
+	height: 100px;
+	margin-left:100px;
+	padding: 1px;
+	float: left;
+}
+#head-div02{
+	width:60%;
+	height:100px;
+	float: left;
+	text-align: center;
+}
+#logo-h1{
+	font-size: 40px;
+	font-family: '楷体';
+}
+#login-div{
+	width: 600px;
+	height: 300px;
+	margin-left: 30%;
+	text-align: center;
+	border: 1px solid;
+}
+#foot-div{
+	background-color:red;
+	width: 100%;
+	height: 150px;
+	margin-top:30px;
+	padding-top: 30px;
+}
+#foot-logo{
+	width: 102px;
+	height: 101px;
+	background-image: url("../images/logo01.png");
+	margin-left: 150px;
+	float: left;
+}
+#foot-info{
+	float: left;
+	margin-left: 30px;
+}
+.info-p{
+	font-size: 13px;
+	font-weight: bold;
+	color: #fff;
+}
+.text-input{
+	height: 30px;
+	width: 200px;
+}
+.login-span{
+	font-size: 17px;
+	font-weight: bold;
+	
+}
+#table01 {
+	margin-left: 180px;
+}
+#sub-input{
+	border: none;
+	width: 100px;
+	height: 30px;
+	background-color: #4490F7;
+	margin-left:-75px;
+	font-size: 18px;
+	font-weight: bold;
+	color: #fff;
+	border-radius:6px 4px 5px 6px;
+}#sub-input2{
+	border: none;
+	width: 100px;
+	height: 30px;
+	background-color: #4490F7;
+	font-size: 18px;
+	font-weight: bold;
+	color: #fff;
+	border-radius:6px 4px 5px 6px;
+}
+#re-span{
+	font-size: 20px;
+	color: #2E7FDB;
+}
+#regeist-div{
+	position:fixed;
+	z-index:5;
+	width: 500px;
+	height: 500px;
+	background-color: #fff;
+	margin-top: -600px;
+	margin-left: 450px;
+	text-align: center;
+}
+#regeist-bg{
+	position:fixed;
+	z-index:4;
+	width:100%;
+	height:1000px;
+	margin-top:-650px;
+	margin-left:-10px;
+	opacity:0.7;
+	background-color: gray;
+}
+#reg-info{
+	width: 100%;
+	height: 100px;
+	padding-top: 50px;
+	border-bottom-color: blue;
+	border-bottom-style: groove;
+	border-bottom-width: ex;
+}
+#table02{
+	margin-left: 100px;
+	margin-top: 50px;
+}
+#rigtDiv{
+	 float: right;
+	 cursor: pointer;
+	 width: 20px;
+	 height: 20px;
+	 font-size: 20px;
+}
+.err{
+	color: red;
+}

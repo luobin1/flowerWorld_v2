@@ -1,0 +1,196 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:p="http://www.springframework.org/schema/p"
+	xmlns:aop="http://www.springframework.org/schema/aop" xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:jee="http://www.springframework.org/schema/jee" xmlns:tx="http://www.springframework.org/schema/tx"
+	xsi:schemaLocation="    
+        http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-4.0.xsd  
+        http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-4.0.xsd  
+        http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-4.0.xsd  
+        http://www.springframework.org/schema/jee http://www.springframework.org/schema/jee/spring-jee-4.0.xsd  
+        http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx-4.0.xsd">
+	<context:annotation-config />
+	<!-- 自动扫描 -->
+	<context:component-scan base-package="com.flower" />
+
+	<bean id="dataSource" class="com.alibaba.druid.pool.DruidDataSource"
+		init-method="init" destroy-method="close">
+		<property name="driverClassName" value="com.mysql.jdbc.Driver" />
+		<property name="url"
+			value="jdbc:mysql://47.95.217.68:3306/db_flower?characterEncoding=UTF-8" />
+		<property name="username" value="senly" />
+		<property name="password" value="senly" />
+		<property name="filters" value="stat" />
+		<property name="maxActive" value="20" />
+		<property name="initialSize" value="1" />
+		<property name="maxWait" value="60000" />
+		<property name="minIdle" value="1" />
+		<property name="timeBetweenEvictionRunsMillis" value="3000" />
+		<property name="minEvictableIdleTimeMillis" value="300000" />
+		<property name="validationQuery" value="SELECT 'x'" />
+		<property name="testWhileIdle" value="true" />
+		<property name="testOnBorrow" value="false" />
+		<property name="testOnReturn" value="false" />
+	</bean>
+
+	<!-- 配置mybatis的sqlSessionFactory -->
+	<bean id="sqlSessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean">
+		<property name="dataSource" ref="dataSource" />
+		<!-- 自动扫描mappers.xml文件 -->
+		<property name="mapperLocations" value="classpath:com/flower/mappers/*.xml"></property>
+		<!-- mybatis配置文件 -->
+		<property name="configLocation" value="classpath:mybatis-config.xml"></property>
+	</bean>
+
+	<!-- DAO接口所在包名，Spring会自动查找其下的类 -->
+	<bean class="org.mybatis.spring.mapper.MapperScannerConfigurer">
+		<property name="basePackage" value="com.flower.dao" />
+		<property name="sqlSessionFactoryBeanName" value="sqlSessionFactory"></property>
+	</bean>
+
+	<!-- (事务管理)transaction manager, use JtaTransactionManager for global tx -->
+	<bean id="transactionManager"
+		class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
+		<property name="dataSource" ref="dataSource" />
+	</bean>
+
+	<!-- 自定义Realm -->
+	<bean id="myRealm" class="com.flower.realm.MyRealm" />
+
+	<!-- 安全管理器 -->
+	<bean id="securityManager" class="org.apache.shiro.web.mgt.DefaultWebSecurityManager">
+		<property name="realm" ref="myRealm" />
+	</bean>
+
+	<!-- Shiro过滤器 -->
+	<bean id="shiroFilter" class="org.apache.shiro.spring.web.ShiroFilterFactoryBean">
+		<!-- Shiro的核心安全接口,这个属性是必须的 -->
+		<property name="securityManager" ref="securityManager" />
+		<!-- 身份认证失败，则跳转到登录页面的配置 -->
+		<property name="loginUrl" value="/login.html" />
+		<!-- 权限认证失败，则跳转到指定页面 -->
+		<property name="unauthorizedUrl" value="/noPower.jsp" />
+		<!-- Shiro连接约束配置,即过滤链的定义 -->
+		<property name="filterChainDefinitions">
+			<value>
+				/login=anon
+				/admin*=authc
+				<!-- 只有管理员才能进行图片的修改和上传 -->
+				/img/**=perms[ads]
+				<!-- 只有管理员或者超级管理员才能更改鲜花类别的信息 -->
+				/flowerType/**=perms[ads]
+				
+				
+				<!-- 只有管理员或者超级管理员才能对鲜花进行增删改 -->
+				/flower/findFlowers.do=perms[ads]
+				/flower/toChangeFlowerPage.do=perms[ads]
+				/flower/changeFlowerInfo.do=perms[ads]
+				/flower/deleteFlowerById.do=perms[ads]
+				/flower/addFlower.do==perms[ads]
+				<!-- 订单和购物车vip或普通用户只有登录才能用 -->
+				/to/**=perms[uv]
+				
+				<!-- 只有登录过后才能进入到个人中心的相关操作 -->
+				/personalCenter/**=perms[index]
+				/flower/loadAdminIndex.do=perms[ads]
+			
+				
+				<!-- 管理员和超级管理员对用户的管理权限 -->
+				/userAdmin/findByUphone.do=roles[supadmin]
+				/userAdmin/findByUserAndRoleAll.do=roles[supadmin]
+				/userAdmin/toUpdateUserAdmin.do=perms[supadmin]
+				/userAdmin/roleIDs.do=perms[ads]
+				/userAdmin/UserAdminById.do=perms[ads]
+				/userAdmin/deleteUserAdmin.do=perms[ads]
+				/userAdmin/toUpdateUserAdmin2.do=perms[ads]
+				/userAdmin/updateUserAdmin.do=perms[ads]
+				<!-- 只有管理官和超级管理员才能进入的页面 -->
+				/adminPages/adminIndexPage.jsp=perms[ads]
+				/flowerPage/**=perms[ads]
+				/adminContact.jsp=perms[ads]
+			<!-- 	/flower/getFlowers.do=roles[admin] -->
+			</value>
+		</property>
+	</bean>
+
+	<!-- 保证实现了Shiro内部lifecycle函数的bean执行 -->
+	<bean id="lifecycleBeanPostProcessor" class="org.apache.shiro.spring.LifecycleBeanPostProcessor" />
+
+	<!-- 开启Shiro注解 -->
+	<bean
+		class="org.springframework.aop.framework.autoproxy.DefaultAdvisorAutoProxyCreator"
+		depends-on="lifecycleBeanPostProcessor" />
+	<bean
+		class="org.apache.shiro.spring.security.interceptor.AuthorizationAttributeSourceAdvisor">
+		<property name="securityManager" ref="securityManager" />
+	</bean>
+
+	<!-- 配置事务通知属性 -->
+	<tx:advice id="txAdvice" transaction-manager="transactionManager">
+		<!-- 定义事务传播属性 -->
+		<tx:attributes>
+			<tx:method name="insert*" propagation="REQUIRED" />
+			<tx:method name="update*" propagation="REQUIRED" />
+			<tx:method name="edit*" propagation="REQUIRED" />
+			<tx:method name="save*" propagation="REQUIRED" />
+			<tx:method name="add*" propagation="REQUIRED" />
+			<tx:method name="new*" propagation="REQUIRED" />
+			<tx:method name="set*" propagation="REQUIRED" />
+			<tx:method name="remove*" propagation="REQUIRED" />
+			<tx:method name="delete*" propagation="REQUIRED" />
+			<tx:method name="change*" propagation="REQUIRED" />
+			<tx:method name="check*" propagation="REQUIRED" />
+			<tx:method name="get*" propagation="REQUIRED" read-only="true" />
+			<tx:method name="find*" propagation="REQUIRED" read-only="true" />
+			<tx:method name="load*" propagation="REQUIRED" read-only="true" />
+			<tx:method name="*" propagation="REQUIRED" read-only="true" />
+		</tx:attributes>
+	</tx:advice>
+
+	<!-- 配置事务切面 -->
+	<aop:config>
+		<aop:pointcut id="serviceOperation"
+			expression="execution(* com.flower.service.*.*(..))" />
+		<aop:advisor advice-ref="txAdvice" pointcut-ref="serviceOperation" />
+	</aop:config>
+
+	<bean id="jedisClientSingle" class="com.flower.jedis.JedisClientSingle"></bean>
+
+	<!-- jedis 的连接池的配置 -->
+	<bean id="jedisPoolConfig" class="redis.clients.jedis.JedisPoolConfig">
+		<property name="maxIdle" value="300" />
+		<property name="maxTotal" value="80000" />
+		<property name="testOnBorrow" value="true" />
+	</bean>
+
+	<!-- jedis 的连接池 -->
+	<bean id="jedisPool" class="redis.clients.jedis.JedisPool">
+		<constructor-arg name="poolConfig" ref="jedisPoolConfig" />
+		<constructor-arg name="host" value="127.0.0.1" />
+		<constructor-arg name="port" value="6379" type="int" />
+		<constructor-arg name="timeout" value="2000" type="int" />
+		<constructor-arg name="password" value="jianren" />
+		<constructor-arg name="database" value="0" type="int" />
+	</bean>
+	<!-- 验证码的相关配置 -->
+	 <bean id="captchaProducer" class="com.google.code.kaptcha.impl.DefaultKaptcha">  
+        <property name="config">  
+            <bean class="com.google.code.kaptcha.util.Config">  
+                <constructor-arg>  
+                    <props>  
+                        <prop key="kaptcha.border">no</prop>  
+                       <!--  <prop key="kaptcha.border.color">105,179,90</prop>   -->
+                        <prop key="kaptcha.textproducer.font.color">blue</prop>  
+                        <prop key="kaptcha.image.width">120</prop>  
+                        <prop key="kaptcha.image.height">60</prop>  
+                        <prop key="kaptcha.textproducer.font.size">40</prop>  
+                        <prop key="kaptcha.session.key">code</prop>  
+                        <prop key="kaptcha.textproducer.char.length">5</prop>  
+                        <prop key="kaptcha.textproducer.font.names">宋体,楷体,微软雅黑</prop>  
+                    </props>  
+                </constructor-arg>  
+            </bean>  
+        </property>  
+    </bean>
+	
+</beans>

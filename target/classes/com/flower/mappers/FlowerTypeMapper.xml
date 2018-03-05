@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.flower.dao.IFlowerTypeDao">
+	<resultMap type="com.flower.entity.FlowerType" id="FlowerTypeResult">
+		<id property="ftypeId" column="ftype_id" />
+		<result property="fatherId" column="father_id" />
+		<result property="ftypeName" column="ftype_name" />
+	</resultMap>
+
+	<select id="findAll" resultMap="FlowerTypeResult">
+		select * from flower_type
+	</select>
+
+	<delete id="deleteByType" parameterType="int">
+		delete from
+		flower_type
+		where ftype_id =#{ftype_id}
+	</delete>
+
+	<select id="findFlowerType" parameterType="int" resultMap="FlowerTypeResult">
+		select * from
+		flower_type where ftype_id =#{ftype_id}
+	</select>
+
+	<update id="updateFlowerType" parameterType="FlowerType">
+		update flower_type
+		<set>
+			<if test="ftypeName != null">
+				ftype_name=#{ftypeName},
+			</if>
+			<if test="fatherId !=null">
+				father_id=#{fatherId},
+			</if>
+		</set>
+		where ftype_id=#{ftypeId}
+	</update>
+
+	<insert id="addFlowerType" parameterType="com.flower.entity.FlowerType">
+		insert into
+		flower_type(father_id,ftype_name)
+		values(#{fatherId},#{ftypeName})
+	</insert>
+
+	<select id="finAllSuper" resultMap="FlowerTypeResult">
+		select * from flower_type
+		where father_id = 0
+	</select>
+
+	<select id="findByTypeName" resultMap="FlowerTypeResult">
+		select * from flower_type
+		where ftype_name =#{ftypeName}
+	</select>
+
+	<select id="findSuperName" resultMap="FlowerTypeResult">
+		SELECT t1.* from
+		flower_type t1,(select father_id from flower_type where ftype_id = #{ftypeId})
+		t2 where t1.ftype_id = t2.father_id
+	</select>
+</mapper>

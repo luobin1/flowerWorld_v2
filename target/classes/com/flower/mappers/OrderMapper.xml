@@ -1,0 +1,98 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.flower.dao.IOrderDao">
+<!-- 命名空间的值可以任意取，但是一般我们会设计一个接口，命名空间的值就设定为该接口的包名+接口名 -->
+
+	<!-- resultType:返回结果的类型；如果返回的数据只有一条，那么直接返回该类型的对象；
+	如果返回的结果是多条，自动生成泛型为该类的集合 -->
+	<resultMap type="com.flower.entity.Order" id="ordera">
+	<id property="orderId" column="order_id"/>
+	<result property="payMethod" column="pay_method"/>
+	<result property="flowerId" column="flower_id"/>
+	<result property="deliAddress" column="deli_address"/>
+	<result property="name" column="name"/>
+	<result property="phone" column="phone"/>
+	<result property="creatTime" column="creat_time"/>
+	<result property="orderNumber" column="order_number"/>
+	<result property="rnumber" column="rnumber"/>
+	<result property="userId" column="user_id"/>
+	<result property="carId" column="car_id"/>
+	</resultMap>
+	
+	<insert id="addOrder" parameterType="com.flower.entity.Order" 
+        useGeneratedKeys="true" keyProperty="order_id"> 
+        insert into myorder(pay_method,flower_id,deli_address,name,phone,creat_time,order_number,rnumber,user_id,car_id)  
+             values(#{payMethod},#{flowerId},#{deliAddress},#{name},#{phone},#{creatTime},#{orderNumber},#{rnumber},#{userId},#{carId})  
+    </insert>
+	
+	
+	
+	<select id="findAll" resultMap="ordera">
+		select * from myorder where user_id=#{userId} and flora=0
+	</select>
+	<select id="findStatOder" resultMap="ordera">
+		select * from myorder where user_id=#{userId} and flora=1
+	</select>
+	
+	<delete id="delete" parameterType="int">
+		delete from myorder where order_id=#{orderId}
+	</delete>
+	
+	
+	 
+	<update id="update" parameterType="com.flower.entity.Order">
+		update myorder
+			<set>
+				<if test="payMethod != null">
+					pay_method = #{payMethod},
+				</if>
+				<if test="flowerId != null">
+					flower_id = #{flowerId},
+				</if>
+				<if test="deliAddress != null">
+					deli_address = #{deliAddress},
+				</if>
+				<if test="name != null">
+					name = #{name},
+				</if>
+				<if test="phone != null">
+					phone = #{phone},
+				</if>
+				<if test="creatTime != null">
+					creat_time = #{creatTime},
+				</if>
+				<if test="orderNumber != null">
+					order_number = #{orderNumber},
+				</if>
+				<if test="rnumber != null">
+					rnumber = #{rnumber},
+				</if>
+				<if test="userId != null">
+					user_id = #{userId},
+				</if>
+				<if test="carId != null">
+					car_id = #{carId},
+				</if>
+				
+			</set>
+			where order_id = #{orderId}
+	</update>
+	
+	
+	<select id="findById" parameterType="int" resultMap="ordera">
+		select * from myorder where order_id=#{orderId}
+	
+	</select>
+	 
+	
+	
+    <!-- 
+    <select id="findSum" resultType="int">
+    	select sum(total) from shop_cart
+    </select>
+ -->
+ 
+ 	
+</mapper>
+

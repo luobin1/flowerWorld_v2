@@ -1,0 +1,124 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>花花世界</title>
+<meta name="keywords"
+	content="free template, floral shop, ecommerce, online shopping, store" />
+<meta name="description"
+	content="Floral Shop, About page, free website template for ecommerce stores or online shopping websites." />
+<link href="/flowerWorld_v2/templatemo_style.css" rel="stylesheet"
+	type="text/css" />
+<link rel="shortcut icon" href="/flowerWorld_v2/favicon.ico"
+	type="image/x-icon" />
+<link rel="stylesheet" href="/flowerWorld_v2/css/orman.css"
+	type="text/css" media="screen" />
+<link rel="stylesheet" href="/flowerWorld_v2/css/nivo-slider.css"
+	type="text/css" media="screen" />
+
+<link rel="stylesheet" type="text/css"
+	href="/flowerWorld_v2/css/ddsmoothmenu.css" />
+<script type="text/javascript" src="/flowerWorld_v2/js/jquery.min.js"></script>
+<script type="text/javascript" src="/flowerWorld_v2/js/ddsmoothmenu.js">
+	/***********************************************
+	 * Smooth Navigational Menu- (c) Dynamic Drive DHTML code library (www.dynamicdrive.com)
+	 * This notice MUST stay intact for legal use
+	 * Visit Dynamic Drive at http://www.dynamicdrive.com/ for full source code
+	 ***********************************************/
+</script>
+<script>
+	var t = 3;
+	setInterval("refer()", 1000);
+	function refer() {
+		if (t == 0) {
+			location.href = "/flowerWorld_v2/flower/sign.do";
+		}
+		document.getElementById('show').innerHTML = "" + t + "秒后跳转到登录页面";
+		t--;
+	}
+</script>
+
+</head>
+
+<body>
+
+	<div id="templatemo_wrapper_sp">
+		<div id="templatemo_header_wsp">
+			<div id="templatemo_header" class="header_subpage">
+				<div id="site_title">
+					<a title="花花世界">花花世界</a>
+				</div>
+				<div id="templatemo_menu" class="ddsmoothmenu">
+					<ul>
+						<li><a href="/flowerWorld_v2/flower/getFlowers.do"
+							class="selected">首页</a></li>
+						<li><a target="_blank" href="/flowerWorld_v2/about.html">关于本店</a></li>
+						<li><a href="javascript:;" onclick="changeTypeNumber(this,0)">鲜花分类</a>
+							<ul>
+								<li><a href="javascript:;"
+									onclick="changeTypeNumber(this,0)">全部鲜花</a></li>
+								<c:forEach items="${flowerTypes }" var="flowerType">
+									<li><a href="javascript:;" class="sidebar_li"
+										onclick="changeTypeNumber(this,${flowerType.ftypeId})">${flowerType.ftypeName
+											}</a></li>
+								</c:forEach>
+								<li><a href="#">周花主题</a></li>
+								<li><a href="#">帮助中心</a></li>
+							</ul></li>
+						<li><a href="/flowerWorld_v2/to/findAllOrder.do">结账</a></li>
+						<li><a href="/flowerWorld_v2/contact.jsp">联系我们</a></li>
+						<li><a href="/flowerWorld_v2/faqs.jsp">常见问题解答</a></li>
+					</ul>
+					<div id="templatemo_search">
+						<form action="#" method="get">
+							<input type="text" value="搜索" name="keyword" id="keyword"
+								title="keyword" onfocus="clearText(this)"
+								onblur="clearText(this)" class="txt_field" /> <input
+								type="submit" name="Search" value="" alt="Search"
+								id="searchbutton" title="Search" class="sub_btn" />
+						</form>
+					</div>
+					<br style="clear: left" />
+				</div>
+				<a href="#" title="请单击此处" class="site_repeat" target="_blank"><img
+					src="/flowerWorld_v2/images/top_repeat.png" title="请单击此处"
+					alt="请单击此处" /></a>
+				<!-- end of templatemo_menu -->
+
+			</div>
+			<!-- END of header -->
+		</div>
+		<!-- END of header wrapper -->
+		<div id="templatemo_main_wrapper" style="height: 500px;">
+			<div id="templatemo_main">
+				<h1 style="color: red;">修改密码成功！</h1>
+				<span id="show"></span>
+			</div>
+			<!-- END of main -->
+		</div>
+		<!-- END of main wrapper -->
+
+		<div id="templatemo_footer_wrapper">
+			<div id="templatemo_footer">
+
+				<div class="footer_right">
+					<p>
+						<a href="index.html">Home</a> | <a href="products.html">Products</a>
+						| <a href="about.html">About</a> | <a href="faqs.html">FAQs</a> |
+						<a href="checkout.html">Checkout</a> | <a href="contact.html">Contact</a>
+					</p>
+					<p>
+						Copyright (c) 2084 <a href="#">Company Name</a> | Collect from
+					</p>
+				</div>
+				<div class="cleaner"></div>
+			</div>
+			<!-- END of footer -->
+		</div>
+		<!-- END of footer wrapper -->
+	</div>
+
+</body>
+<script type='text/javascript' src='/flowerWorld_v2/js/logging.js'></script>
+</html>

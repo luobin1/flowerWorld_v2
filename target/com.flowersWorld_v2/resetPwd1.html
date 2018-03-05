@@ -1,0 +1,254 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>花花世界</title>
+<meta name="keywords"
+	content="free template, floral shop, ecommerce, online shopping, store" />
+<meta name="description"
+	content="Floral Shop is free website template for ecommerce or online shopping websites. Products, Shopping Cart, FAQs and Checkout pages are included." />
+<link href="/flowerWorld_v2/templatemo_style.css" rel="stylesheet" type="text/css" />
+
+<link rel="stylesheet" href="/flowerWorld_v2/css/orman.css" type="text/css"
+	media="screen" />
+<link rel="stylesheet" href="/flowerWorld_v2/css/nivo-slider.css" type="text/css"
+	media="screen" />
+<link rel="shortcut icon" href="/flowerWorld_v2/favicon.ico" type="/flowerWorld_v2/images/x-icon" />
+<link rel="stylesheet" type="text/css"
+	href="/flowerWorld_v2/css/ddsmoothmenu.css" />
+
+<script type="text/javascript" src="/flowerWorld_v2/js/jquery.min.js"></script>
+
+<link rel="stylesheet" type="text/css" href="/flowerWorld_v2/css2/style.css" />
+<link rel="stylesheet" type="text/css"
+	href="/flowerWorld_v2/css2/shopping-mall-index.css" />
+<script type="text/javascript" src="/flowerWorld_v2/js2/jquery.js"></script>
+<script type="text/javascript" src="/flowerWorld_v2/js2/zhonglin.js"></script>
+<script type="text/javascript" src="/flowerWorld_v2/js2/zhongling2.js"></script>
+
+<script>
+	$(document).keyup(function(event) {
+		if (event.keyCode == 13) {
+			$("#info").text("");
+			$("#msgCode_msg").text("");
+			$("#submit").trigger("click");
+		}
+	});
+	function checkMsgCode() {
+		var msgCode = $("#msgCode").val();
+		//最好做一个验证，非空验证，如果verifyCode为空，就结束方法
+		if (!msgCode) {
+			$("#msgCode_msg").text("验证码不能为空.");//.addClass("error_msg");
+			return false;
+		}
+		//发送异步请求
+		$.ajax({
+			type : "post",
+			url : "/flowerWorld_v2/equlsMsgCode.do",
+			data : {
+				"code" : msgCode
+			},
+			dataType : 'json',
+			success : function(msg) {
+				if (msg.msg == '1') {
+					window.location.href = '/flowerWorld_v2/flower/resetPwdNext.do?'
+						+ (Math.random()*1000000);
+				} else if (msg.msg == '0') {
+					$("#msgCode_msg").text("验证码错误");//.addClass("error_msg");
+					return false;
+				}
+			}
+		});
+	}
+</script>
+
+<link rel="stylesheet" href="/flowerWorld_v2/css/slimbox2.css" type="text/css"
+	media="screen" />
+<script type="text/JavaScript" src="/flowerWorld_v2/js/slimbox2.js"></script>
+</head>
+<body>
+	<!-- 台头 -->
+	<div class="zl-header">
+		<div class="zl-hd w1200">
+			<p class="hd-p1 f-l">
+				您好，欢迎来到花花世界，请<a href="/flowerWorld_v2/flower/sign.do">【登录】</a>
+			</p>
+			<p class="hd-p2 f-r">
+				<a href="/flowerWorld_v2/flower/getFlowers.do">返回首页 </a><span>|</span> <a href="购物车.html">我的购物车</a><span>|</span>
+				<a href="我的订单.html">我的订单</a>
+			</p>
+			<div style="clear: both;"></div>
+		</div>
+	</div>
+	<div id="site_title">
+		<a href="#" title="FLOWERS WOELD">FLOWERS WOELD</a>
+	</div>
+	<!--重设密码-->
+	<div class="password-con">
+		<div class="psw">
+			<p class="psw-p1">手机号码</p>
+			<input type="text" id="u_phone" name="u_phone" placeholder="请输入手机号码" /><a
+				id="info"></a>
+		</div>
+		<div class="psw psw2">
+			<p class="psw-p1">短信验证码</p>
+			<input type="text" id="msgCode" placeholder="请输入短信验证码" />
+			<button id="getmsg">获取短信验证码</button>
+			<span class="dui" id="msgCode_msg"></span>
+		</div>
+		<button id="submit" class="psw-btn" onclick="checkMsgCode()">下一步</button>
+	</div>
+	<!--底部一块-->
+	<div class="footer-box">
+		<ul class="footer-info1 w1200">
+			<li>
+				<div class="ft-tu1">
+					<a href="JavaScript:;"><img src="/flowerWorld_v2/images2/zl2-86.gif" /></a>
+				</div>
+				<h3>
+					<a href="JavaScript:;">号码保障</a>
+				</h3>
+				<P>所有会员，手机短信验证</P>
+			</li>
+			<li>
+				<div class="ft-tu1">
+					<a href="JavaScript:;"><img src="/flowerWorld_v2/images2/zl2-87.gif" /></a>
+				</div>
+				<h3>
+					<a href="JavaScript:;">5*8小时客服</a>
+				</h3>
+				<P>有任何问题随时免费资讯</P>
+			</li>
+			<li>
+				<div class="ft-tu1">
+					<a href="JavaScript:;"><img src="/flowerWorld_v2/images2/zl2-88.gif" /></a>
+				</div>
+				<h3>
+					<a href="JavaScript:;">专业专攻</a>
+				</h3>
+				<P>我们只专注于建筑行业的信息服务</P>
+			</li>
+			<li>
+				<div class="ft-tu1">
+					<a href="regist.html"><img src="/flowerWorld_v2/images2/zl2-89.gif" /></a>
+				</div>
+				<h3>
+					<a href="/flowerWorld_v2/flower/regist.do">注册有礼</a>
+				</h3>
+				<P>随时随地注册有大礼包</P>
+			</li>
+			<li>
+				<div class="ft-tu1">
+					<a href="JavaScript:;"><img src="/flowerWorld_v2/images2/zl2-90.gif" /></a>
+				</div>
+				<h3>
+					<a href="JavaScript:;">值得信赖</a>
+				</h3>
+				<P>专业的产品，专业的团队</P>
+			</li>
+			<div style="clear: both;"></div>
+		</ul>
+		<div class="footer-info2 w1200">
+			<div class="ft-if2-left f-l">
+				<dl>
+					<dt>
+						<a href="6-1服务协议.html">新手上路</a>
+					</dt>
+					<dd>
+						<a href="6-1服务协议.html">购物流程</a> <a href="6-1服务协议.html">在线支付</a> <a
+							href="6-1服务协议.html">投诉与建议</a>
+					</dd>
+				</dl>
+				<dl>
+					<dt>
+						<a href="6-1服务协议.html">配送方式</a>
+					</dt>
+					<dd>
+						<a href="6-1服务协议.html">货到付款区域</a> <a href="6-1服务协议.html">配送费标准</a>
+					</dd>
+				</dl>
+				<dl>
+					<dt>
+						<a href="6-1服务协议.html">购物指南</a>
+					</dt>
+					<dd>
+						<a href="6-1服务协议.html">订购流程</a> <a href="6-1服务协议.html">购物常见问题</a>
+					</dd>
+				</dl>
+				<dl>
+					<dt>
+						<a href="6-1服务协议.html">售后服务</a>
+					</dt>
+					<dd>
+						<a href="6-1服务协议.html">售后服务保障</a> <a href="6-1服务协议.html">退换货政策总则</a>
+						<a href="6-1服务协议.html">自营商品退换细则</a>
+					</dd>
+				</dl>
+				<div style="clear: both;"></div>
+			</div>
+			<div class="ft-if2-right f-r">
+				<h3>400-0000-0000</h3>
+				<p>周一至周日 9:00-24:00</p>
+				<p>（仅收市话费）</p>
+			</div>
+			<div style="clear: both;"></div>
+		</div>
+		<div class="footer-info3 w1200">
+			<p>
+				<a href="#">免责条款</a><span>|</span> <a href="#">隐私保护</a><span>|</span>
+				<a href="#">咨询热点</a><span>|</span> <a href="#">联系我们</a><span>|</span>
+				<a href="#">公司简介</a>
+			</p>
+			<p>
+				<a href="#">川ICP备13044278号</a><span>|</span> <a href="#">合字B1.B2-20130004</a><span>|</span>
+				<a href="#">营业执照</a><span>|</span> <a href="#">互联网药品信息服务资格证</a><span>|</span>
+				<a href="#">互联网药品交易服务资格证</a>
+			</p>
+		</div>
+	</div>
+
+
+
+</body>
+<script>
+	//发送验证码
+	$('#getmsg').bind("click", sendCode);
+	var a = 60;
+	var t;
+	function sendCode() {
+		//发送异步请求
+		$.ajax({
+			type : "post",
+			url : "/flowerWorld_v2/fsendSms.do",
+			data : {
+				"phone" : $("#u_phone").val()
+			},
+			dataType : 'json',
+			success : function(msg) {
+				$("#info").text(msg.state);
+				if (msg.state == "发送成功") {
+					$("#info").attr("style", "color:blue");
+					$('#getmsg').unbind("click");
+					t = setInterval(djs, 1000);
+
+				} else {
+					$("#info").attr("style", "color:red");
+				}
+			}
+		});
+
+	}
+	function djs() {
+		$("#getmsg").text("重新发送(" + a + ")");
+		a--;
+		if (a == 0) {
+			clearInterval(t);
+			$('#getmsg').bind("click", sendCode);
+			$("#info").text("");
+			$("#getmsg").text("获取短信验证码");
+			a = 60;
+		}
+	}
+</script>
+<script type='text/javascript' src='/flowerWorld_v2/js/logging.js'></script>
+</html>

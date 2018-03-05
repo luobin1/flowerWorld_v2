@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.flower.dao.ShopCartDao">
+<!-- 命名空间的值可以任意取，但是一般我们会设计一个接口，命名空间的值就设定为该接口的包名+接口名 -->
+
+	<!-- resultType:返回结果的类型；如果返回的数据只有一条，那么直接返回该类型的对象；
+	如果返回的结果是多条，自动生成泛型为该类的集合 -->
+	<resultMap type="com.flower.entity.ShopCart" id="shopcart">
+	<id property="carId" column="car_id"/>
+	<result property="flowerId" column="flower_id"/>
+	<result property="number" column="number"/>
+	<result property="subtotal" column="subtotal"/>
+	<result property="total" column="total"/>
+	<result property="imagesUri" column="images_uri"/>
+	<result property="userId" column="user_id"/>
+	</resultMap>
+	<select id="findAll" resultMap="shopcart">
+		select * from shop_cart where user_id=#{userId} and flor=0
+	</select>
+	
+	<select id="findAuth" resultMap="shopcart">
+		select * from shop_cart where user_id=#{userId} and flor=1
+	</select>
+	<delete id="delete" parameterType="int">
+		delete from shop_cart where car_id=#{carId}
+	</delete>
+	
+	<update id="update" parameterType="shopcart">
+		update shop_cart
+		<!-- set元素的作用：
+			1.可以自动在拼接的时候添加一个关键字：set
+			2.可以自动去掉被拼接的sql语句中的最后一个逗号 -->
+			<set>
+				<if test="flowerId != null">
+					flower_id = #{flowerId},
+				</if>
+				<if test="subtotal != null">
+					subtotal = #{subtotal},
+				</if>
+				<if test="total != null">
+					total = #{total},
+				</if>
+				<if test="imagesUri != null">
+					images_uri = #{imagesUri},
+				</if>
+				<if test="number != null">
+					number = #{number},
+				</if>
+				<if test="userId != null">
+					user_id = #{userId},
+				</if>
+				<if test="flor != null">
+					flor = #{flor},
+				</if>
+			</set>
+			where car_id = #{carId}
+	</update>
+	
+	
+	<select id="findById" parameterType="int" resultMap="shopcart">
+		select * from shop_cart where car_id=#{carId}
+	 
+	</select>
+	
+	<insert id="add" parameterType="com.flower.entity.ShopCart" 
+        useGeneratedKeys="true" keyProperty="car_id"> 
+        insert into shop_cart(flower_id,number,subtotal,total,images_uri,user_id)  
+             values(#{flowerId},#{number},#{subtotal},#{total},#{imagesUri},#{userId})  
+    </insert>
+    
+    <select id="findSum" resultType="double">
+    	select sum(total) from shop_cart where user_id=#{userId} and flor=0
+    </select>
+
+	<select id="findFlowerId" parameterType="int">
+    	select flower_id from shop_cart where user_id=#{userId} and flor=0
+    </select>
+    
+    <select id="findByFlowerId" parameterType="int" resultMap="shopcart">
+    	select * from shop_cart where flower_id=#{flowerId} and flor=0
+    </select>
+</mapper>
+
